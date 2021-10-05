@@ -12,6 +12,8 @@ public class FrontendApplication {
 		SpringApplication.run(FrontendApplication.class, args);
 	}
 	public class ClassFormatException {
+		
 
 	}
+
 }
