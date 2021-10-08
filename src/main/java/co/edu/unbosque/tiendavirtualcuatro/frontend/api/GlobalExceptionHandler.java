@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,10 +31,11 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(WebClientResponseException.class)
-  public RedirectView webClientResponseException(WebClientResponseException e, 
+  public RedirectView webClientResponseException(WebClientResponseException e,
       RedirectAttributes redirectAttributes) {
     logger.error("Ocurrio un error de tipo WebClientResponseException: "
         + e.getMessage());
+    logger.error("El reponse status es: " + e.getStatusCode());
     e.getHeaders()
       .forEach((key, value) -> {
         logger.info(String.format(
@@ -46,12 +48,16 @@ public class GlobalExceptionHandler {
       .getURI()
       .toString());
     logger.error("body " + e.getResponseBodyAsString());
-    Gson gson = new Gson();
-    ErrorDetallado errorDetallado = gson.fromJson(
-      e.getResponseBodyAsString(Charset.forName("UTF-8")), ErrorDetallado.class);
-    redirectAttributes.addFlashAttribute("errores", errorDetallado.getErrores());
-    
-    
+    // Evitar procesar una respuesta 404 No Encontrado
+    if (e.getStatusCode() != HttpStatus.NOT_FOUND) {
+      Gson gson = new Gson();
+      ErrorDetallado errorDetallado = gson.fromJson(
+        e.getResponseBodyAsString(Charset.forName("UTF-8")),
+        ErrorDetallado.class);
+      redirectAttributes.addFlashAttribute("errores",
+        errorDetallado.getErrores());
+
+    }
     return new RedirectView("/proveedores", true);
 
   }
