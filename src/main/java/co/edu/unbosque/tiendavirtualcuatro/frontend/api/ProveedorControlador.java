@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-
 
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ClientHttpRequest;
@@ -24,11 +24,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.BodyInserter;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriBuilder;
 
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ProveedorVO;
@@ -45,39 +48,70 @@ public class ProveedorControlador extends ControladorBase {
   }
 
   @GetMapping
-  public String homeProveedores(Model model) {
-
+  public String homeProveedores(Optional<String> nit, Model model) {
+    Optional<String> parametroNit;
+    if (nit.isPresent() && nit.get().isBlank()) {
+      parametroNit = Optional.empty();
+    } else {
+      parametroNit = nit;
+    }
     Flux<ProveedorVO> proveedoresFlux = crearWebClient().get()
-      .uri(getUri())
+      .uri( uriBuilder -> uriBuilder
+        .path(getUri())
+        .queryParamIfPresent("nit", parametroNit)
+        .build() )
       .accept(MediaType.APPLICATION_JSON)
       .retrieve()
+      .onStatus(status -> status == HttpStatus.NOT_FOUND,
+      response -> Mono.empty())
       .bodyToFlux(ProveedorVO.class);
     List<ProveedorVO> proveedores = proveedoresFlux.collectList()
       .block();
 
     model.addAttribute("tituloPagina", "Proveedores - Listado");
     model.addAttribute("proveedores", proveedores);
+    
+    if (nit.isPresent() && !nit.get().isBlank()) {
+      if (proveedores.isEmpty()) {
+        
+        model.addAttribute("errores", "No hay proveedores con el NIT: " + nit.get());
+      }
+    }
+    
     return "proveedores/index";
   }
 
   @GetMapping("/{nit}")
-  public String mostrarProveedor(@PathVariable Long nit, Model model) {
+  public ModelAndView mostrarProveedor(@PathVariable String nit,
+      ModelMap model, RedirectAttributes redirectAttributes) {
 
     Flux<ProveedorVO> proveedoresFlux = crearWebClient().get()
       .uri(uriBuilder -> uriBuilder.path(getUri() + "/{nit}")
         .build(nit))
       .accept(MediaType.APPLICATION_JSON)
       .retrieve()
+      .onStatus(status -> status == HttpStatus.NOT_FOUND,
+        response -> Mono.empty())
       .bodyToFlux(ProveedorVO.class);
     List<ProveedorVO> proveedores = proveedoresFlux.collectList()
       .block();
 
     model.addAttribute("tituloPagina", "Proveedor - Editar");
-    model.addAttribute("proveedor", proveedores.get(0));
-    model.addAttribute("action", getUri() + "/put");
-    model.addAttribute("method", "post");
-    model.addAttribute("operacion", "editar");
-    return "proveedores/editar";
+    String rutaRedirigida = "";
+
+    if (proveedores.isEmpty()) {
+      redirectAttributes.addFlashAttribute("errores",
+        List.of("No existe un proveedor con el NIT " + nit));
+      rutaRedirigida = "redirect:" + getUri();
+    } else {
+      model.addAttribute("proveedor", proveedores.get(0));
+      model.addAttribute("action", getUri() + "/put");
+      model.addAttribute("method", "post");
+      model.addAttribute("operacion", "editar");
+      rutaRedirigida = "" + getUri() + "/editar";
+    }
+    // return "proveedores/editar";
+    return new ModelAndView(rutaRedirigida);
   }
 
   @GetMapping("/nuevo")
@@ -86,11 +120,32 @@ public class ProveedorControlador extends ControladorBase {
     model.addAttribute("proveedor", new ProveedorVO());
     model.addAttribute("action", getUri());
     model.addAttribute("method", "post");
-    
-    
+
     return "proveedores/nuevo";
   }
-
+  /*
+  @GetMapping
+  public String getProveedorPorNit(@RequestParam String nit, Model model) {
+    Flux<ProveedorVO> proveedoresFlux = crearWebClient().get()
+        .uri(uriBuilder -> uriBuilder.path(getUri() + "/{nit}")
+          .build(nit))
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .onStatus(status -> status == HttpStatus.NOT_FOUND,
+          response -> Mono.empty())
+        .bodyToFlux(ProveedorVO.class);
+      List<ProveedorVO> proveedores = proveedoresFlux.collectList()
+        .block();
+      
+      if (proveedores.isEmpty()) {
+        model.addAttribute("errores",
+          List.of("No existen proveedores con el NIT " + nit));
+        
+      }
+      model.addAttribute("proveedores", proveedores);
+      return "/proveedores/index";
+  }
+*/
   @PostMapping
   public ModelAndView crearProveedor(
       @ModelAttribute("proveedor") ProveedorVO proveedor, ModelMap model) {
@@ -120,7 +175,7 @@ public class ProveedorControlador extends ControladorBase {
     // List<Proveedor> proveedores = new ArrayList<>();
     List<ProveedorVO> proveedores = proveedoresFlux.collectList()
       .block();
-    
+
     model.addAttribute("proveedor", proveedores.get(0));
     // return "proveedores/editar"; + proveedores.get(0).getNit();
     return new ModelAndView(

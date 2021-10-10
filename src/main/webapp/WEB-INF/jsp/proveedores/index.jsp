@@ -15,6 +15,14 @@
 			</c:forEach>
 		</ul>
 	</c:if>
+	
+	
+	<form action="/proveedores/" method="get">
+	 <p><label>Buscar por NIT:</label><input type="text" name="nit" value=""> 
+	<input type="submit" value="Buscar"></p>
+	</form>
+	
+
 
 	<table>
 		<caption>Listado de los proveedores de productos.</caption>
