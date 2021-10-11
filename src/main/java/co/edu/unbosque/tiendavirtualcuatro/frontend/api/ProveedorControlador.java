@@ -115,13 +115,15 @@ public class ProveedorControlador extends ControladorBase {
   }
 
   @GetMapping("/nuevo")
-  public String nuevoProveedor(Model model, HttpServletRequest request) {
+  public ModelAndView nuevoProveedor(Model model, HttpServletRequest request) {
     model.addAttribute("tituloPagina", "Proveedores - Nuevo");
-    model.addAttribute("proveedor", new ProveedorVO());
+   
+      model.addAttribute("proveedor", new ProveedorVO());
+
     model.addAttribute("action", getUri());
     model.addAttribute("method", "post");
 
-    return "proveedores/nuevo";
+    return new ModelAndView("proveedores/nuevo");
   }
   /*
   @GetMapping
