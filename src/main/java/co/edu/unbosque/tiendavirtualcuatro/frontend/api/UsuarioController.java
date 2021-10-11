@@ -1,8 +1,6 @@
 package co.edu.unbosque.tiendavirtualcuatro.frontend.api;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import co.edu.unbosque.tiendavirtualcuatro.frontend.dao.UsuarioDAO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.UsuarioVO;
@@ -88,4 +83,22 @@ public class UsuarioController {
     return "redirect:/usuarios/";
 
   }
+  
+	@GetMapping("/buscar")
+	public String consultar(Model model, @RequestParam int cedula_usuario) {
+		String retorno = "";
+		UsuarioVO c = new UsuarioVO();
+		c.setCedula(cedula_usuario);
+		objUsrDao =  new UsuarioDAO();
+		UsuarioVO usr = objUsrDao.consultar(c);		
+		if(usr != null) {
+		model.addAttribute("usuario", usr);	
+		retorno = "buscar";
+		}else {
+		model.addAttribute("error", "Cedula de cliente incorrecta");
+		retorno = "usuarios";
+		}
+		return retorno;
+	}  
+  
 }

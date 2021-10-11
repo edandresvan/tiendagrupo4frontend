@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
  
 
@@ -76,6 +75,16 @@ private static final String URL = "http://localhost:5000";
           System.out.println("Exception in NetClientGet:- " + e);
       }
 		return null;
-	}	
+	}
+  
+	public UsuarioVO consultar(UsuarioVO usr) {
+		WebClient webClient =  WebClient.create(URL);
+		UsuarioVO objUsuario = null;
+		Mono<UsuarioVO> response = webClient.get().uri(URL+"/buscar/?cedulau="+usr.getCedula()).
+			retrieve().bodyToMono(UsuarioVO.class);
+		objUsuario = response.block();
+		
+		return objUsuario;
+	}  
 
 }

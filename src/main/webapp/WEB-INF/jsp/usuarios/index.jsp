@@ -11,7 +11,13 @@
 
 	<p>
 		<a href="/usuarios/nuevo">Crear Usuario</a></p>
-
+	</div>		
+	<form action="/usuarios/" method="get">
+	 <p><label>Buscar por Cedula:</label><input type="text" name="cedula" value=""> 
+	<input type="submit" value="Buscar"></p>
+	</form>
+	</div>
+	
 <table>
     <caption>Listado de los usuarios del sistema</caption>
     <thead>
@@ -35,7 +41,7 @@
           <td>${usuario.email}</td>
           <td>${usuario.password}</td>
            <td>${usuario.rol}</td>
-          <td><a href="/usuarios/${usuario.cedula}">Editar</a></td>
+          <td><a href="/usuarios/${usuario.cedula}"> Editar</a></td>
         </tr>
       </c:forEach>
     </tbody>
