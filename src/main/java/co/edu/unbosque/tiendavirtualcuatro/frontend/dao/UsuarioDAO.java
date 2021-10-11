@@ -4,11 +4,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import com.google.gson.Gson;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+ 
 
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.UsuarioVO;
 import reactor.core.publisher.Mono;
@@ -42,7 +50,7 @@ private static final String URL = "http://localhost:5000";
     
   }
   
-  public String listaDeUsuarios() {
+  public List<UsuarioVO> listaDeUsuarios() {
 		
 		try {
 
@@ -58,7 +66,12 @@ private static final String URL = "http://localhost:5000";
           BufferedReader br = new BufferedReader(in);
           String json = br.readLine();
           conn.disconnect();
-          return json;
+          Gson gson = new Gson();
+          Type tipoListaUsuario = new TypeToken<ArrayList<UsuarioVO>>(){}.getType();
+          
+          ArrayList<UsuarioVO> usuarios = gson.fromJson(json, tipoListaUsuario);
+          return usuarios;
+          
       } catch (Exception e) {
           System.out.println("Exception in NetClientGet:- " + e);
       }

@@ -1,6 +1,7 @@
 package co.edu.unbosque.tiendavirtualcuatro.frontend.api;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.lang.reflect.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,10 @@ public class UsuarioController {
   private UsuarioDAO objUsrDao;
 
   @GetMapping
-  public String homeUsuarios() {
+  public String homeUsuarios(Model model) {
+    
+    List<UsuarioVO> usuarios = this.objUsrDao.listaDeUsuarios();
+    model.addAttribute("usuarios", usuarios);
     return "/usuarios/index";
   }
 

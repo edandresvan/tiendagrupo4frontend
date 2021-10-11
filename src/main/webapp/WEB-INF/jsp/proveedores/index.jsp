@@ -21,7 +21,7 @@
 	 <p><label>Buscar por NIT:</label><input type="text" name="nit" value=""> 
 	<input type="submit" value="Buscar"></p>
 	</form>
-	
+
 
 
 	<table>
