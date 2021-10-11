@@ -81,7 +81,6 @@ public class UsuarioController {
       }
     }
     return "redirect:/usuarios/";
-
   }
   
 	@GetMapping("/buscar")
@@ -99,6 +98,59 @@ public class UsuarioController {
 		retorno = "usuarios";
 		}
 		return retorno;
-	}  
-  
+	}
+	
+	  @GetMapping("/editar")
+	  public String editarElUsuario(Model model) {
+
+	    model.addAttribute("tituloPagina", "Usuario - Editar");
+	    model.addAttribute("usuario", new UsuarioVO());
+	    model.addAttribute("action", "/usuarios/actualizarUsuarios");
+	    model.addAttribute("method", "post");
+	    return "/usuarios/editar";
+	  }
+	  
+	  @PostMapping("/actualizarUsuarios")
+	  public String editarUsuario(Model model,
+	      @ModelAttribute("usuario") UsuarioVO usuario) {
+	    boolean valido = false;
+	    if (usuario.getCedula() <= 1) {
+	      System.out.println("mensaje: cedula no puede ser menor que 1");
+	    } else if (usuario.getUsuario() == null || usuario.getUsuario()
+	                                                      .isBlank()) {
+	      System.out.println("mensaje: usuario (nickname) no puede ser vacio");
+
+	    } else if (usuario.getNombre() == null || usuario.getNombre()
+	                                                     .isBlank()) {
+	      System.out.println("mensaje: nombre no puede ser vacio");
+	    } else if (usuario.getEmail() == null || usuario.getEmail()
+	                                                    .isBlank()) {
+	      System.out.println("mensaje: email no puede ser vacio");
+	    } else if (usuario.getPassword() == null || usuario.getPassword()
+	                                                       .isBlank()) {
+	      System.out.println("mensaje: password no puede ser vacio");
+	    } else if (usuario.getRol() == null || usuario.getRol()
+	                                                  .isBlank()) {
+	      System.out.println("mensaje: rol no puede ser vacio");
+	    } else if (!(usuario.getRol()
+	                       .equals("administrador")
+	        || usuario.getRol()
+	                   .equals("usuario"))) {
+	      
+	      System.out.println(
+	          "mensaje: rol solo puede ser 'administrador' o 'usuario'");
+	    } else {
+
+	      objUsrDao = new UsuarioDAO();
+
+	      UsuarioVO usuarioEditado = objUsrDao.editarUsuario(usuario);
+
+	      if (usuarioEditado != null) {
+	        model.addAttribute("mensaje", "Usuario editado");
+	        System.out.println("mensaje: Usuario editado");
+
+	      }
+	    }
+	    return "redirect:/usuarios/";
+	  }	  
 }

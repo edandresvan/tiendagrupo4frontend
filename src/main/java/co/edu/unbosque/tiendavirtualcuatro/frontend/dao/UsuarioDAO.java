@@ -43,10 +43,6 @@ private static final String URL = "http://localhost:5000";
       System.out.println("---->" + e.getMessage());
       return null;
     }
-
-    
-    
-    
   }
   
   public List<UsuarioVO> listaDeUsuarios() {
@@ -85,6 +81,24 @@ private static final String URL = "http://localhost:5000";
 		objUsuario = response.block();
 		
 		return objUsuario;
-	}  
+	}
+	
+	  public UsuarioVO editarUsuario(UsuarioVO usuarioVO) {
 
+		    try {
+		      WebClient webClient = WebClient.create(URL);
+		      UsuarioVO objUsuario = null;
+		      Mono<UsuarioVO> response = webClient.post().uri(URL + "/usuarios/actualizarUsuarios")
+		          .body(Mono.just(usuarioVO), UsuarioVO.class).retrieve().bodyToMono(UsuarioVO.class);
+
+		      objUsuario = response.block();
+		      return objUsuario;
+
+		    } catch (WebClientResponseException e) {
+		      e.getMessage();
+		      System.out.println("---->" + e.getMessage());
+		      return null;
+		    }
+		  }
+	  
 }
