@@ -12,6 +12,7 @@
 	<ul>
 		<li><a href="/usuarios">Usuarios</a></li>
 		<li><a href="/proveedores">Proveedores</a></li>
+		<li><a href="/productos">Productos</a></li>
 	</ul>
 </header>
 <body>
