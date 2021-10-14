@@ -14,7 +14,7 @@
 				<div class="row">
 
 					<div class="mb-3 form-group col-md-3">
-						<label for="email">C�dula <input type="email"
+						<label for="email">Cédula <input type="email"
 							class="form-control " id="email"></label>
 					</div>
 					<div class="mb-3 form-group col-md-2">

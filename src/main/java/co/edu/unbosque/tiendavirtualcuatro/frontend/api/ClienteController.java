@@ -1,6 +1,9 @@
 package co.edu.unbosque.tiendavirtualcuatro.frontend.api;
 
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
 import java.lang.reflect.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -17,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 
 import co.edu.unbosque.tiendavirtualcuatro.frontend.dao.ClienteDAO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ClienteVO;
+import co.edu.unbosque.tiendavirtualcuatro.frontend.model.UsuarioVO;
 
 
 
@@ -28,18 +33,17 @@ public class ClienteController {
 	  private ClienteDAO objUsrDao;
 
 	  @GetMapping
-	  public String homeClientes() {
+	  public String getClienteHome(Model model) {
+	    model.addAttribute("cliente", new ClienteVO());
 	    return "/clientes/index";
 	  }
-
+	  
 	  @GetMapping("/nuevo")
-	  public String nuevoCliente(Model model) {
+	  public ModelAndView nuevoProveedor(Model model, HttpServletRequest request) {
 
-	    model.addAttribute("tituloPagina", "Cliente - Nuevo");
 	    model.addAttribute("cliente", new ClienteVO());
-	    model.addAttribute("action", "/clientes/registrarcliente");
-	    model.addAttribute("method", "post");
-	    return "/clientes/nuevo";
+
+	    return new ModelAndView("redirect:/clientes/");
 	  }
 
 	  @PostMapping("/registrarcliente")
@@ -58,7 +62,7 @@ public class ClienteController {
 	    } else if (cliente.getNombre() == null || cliente.getNombre()
 	                                                    .isBlank()) {
 	      System.out.println("mensaje: el nombre no puede ser vacio");
-	    } else if (cliente.getTelefono() == 0 || cliente.getTelefono() == 0)
+	    } else if (cliente.getTelefono() == null || cliente.getTelefono().isBlank())
 	    	                                              
 	      System.out.println("mensaje: el telefono no puede ser vacio");
 	    	   

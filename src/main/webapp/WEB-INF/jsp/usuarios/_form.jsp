@@ -33,7 +33,11 @@
 
 			<div class="mb-3 form-group col-6">
 				<form:label path="rol" class="form-label">Rol:</form:label>
-				<form:input path="rol" class="form-control" />
+
+				<form:select path="rol" class="custom-select">
+					<form:option value="usuario" label="usuario" />
+					<form:option value="administrador" label="administrador" />
+				</form:select>
 			</div>
 
 		</div>

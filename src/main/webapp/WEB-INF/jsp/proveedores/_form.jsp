@@ -6,14 +6,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 
+
 <c:if test="${fn:length(errores) > 0}">
-	<div class="mb-3 form-group col-6">Se presentaron estos errores:</div>
-	<ul>
-		<c:forEach items="${errores}" var="error">
-			<li>${error}</li>
-		</c:forEach>
-	</ul>
+	<div class="alert alert-danger" role="alert">
+		<div class="">Se presentaron estos errores:</div>
+		<ul>
+			<c:forEach items="${errores}" var="error">
+				<li>${error}</li>
+			</c:forEach>
+		</ul>
+	</div>
 </c:if>
+
 <center>
 	<form:form action="${action}" method="${method}"
 		modelAttribute="proveedor">

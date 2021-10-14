@@ -11,12 +11,14 @@
 	</p>
 
 	<c:if test="${fn:length(errores) > 0}">
-		<p>Se presentaron estos errores:</p>
-		<ul>
-			<c:forEach items="${errores}" var="error">
-				<li>${error}</li>
-			</c:forEach>
-		</ul>
+		<div class="alert alert-danger" role="alert">
+			<p>Se presentaron estos errores:</p>
+			<ul>
+				<c:forEach items="${errores}" var="error">
+					<li>${error}</li>
+				</c:forEach>
+			</ul>
+		</div>
 	</c:if>
 
 	<center>

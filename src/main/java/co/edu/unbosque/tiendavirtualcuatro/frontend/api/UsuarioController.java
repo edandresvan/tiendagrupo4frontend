@@ -32,7 +32,7 @@ public class UsuarioController {
   private UsuarioDAO objUsrDao;
 
   @GetMapping
-  public String getUsuario(@RequestParam Optional<String> cedula, Model model) {
+  public String getUsuarioHome(@RequestParam Optional<String> cedula, Model model) {
 
     if (cedula.isPresent() && !cedula.get()
       .isBlank()) {
