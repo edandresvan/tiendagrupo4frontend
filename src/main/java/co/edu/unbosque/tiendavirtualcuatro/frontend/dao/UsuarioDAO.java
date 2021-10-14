@@ -144,7 +144,6 @@ public class UsuarioDAO {
         .retrieve()
         .bodyToMono(UsuarioVO.class)
         .block();
-
   }
 
 }
