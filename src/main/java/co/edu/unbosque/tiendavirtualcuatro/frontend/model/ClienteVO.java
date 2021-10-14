@@ -2,68 +2,60 @@ package co.edu.unbosque.tiendavirtualcuatro.frontend.model;
 
 public class ClienteVO {
 	
-	private long cedula_cliente;
-	private String direccion_cliente;
-	private String email_cliente;
-	private String nombre_cliente;
-	private long telefono_cliente;
+	private long cedula;
+	private String direccion;
+	private String email;
+	private String nombre;
+	private long telefono;
 	
     public ClienteVO() {
 		    super();
     }
-    /**
-     * @param cedula
-     * @param usuario
-     * @param nombre
-     * @param email
-     * @param password
-     * @param rol
-     */
-
-	public ClienteVO(long cedula_cliente, String direccion_cliente, String email_cliente, String nombre_cliente,
-			long telefono_cliente) {
+    
+	public ClienteVO(long cedula, String direccion, String email, String nombre,
+			long telefono) {
 		super();
-		this.cedula_cliente = cedula_cliente;
-		this.direccion_cliente = direccion_cliente;
-		this.email_cliente = email_cliente;
-		this.nombre_cliente = nombre_cliente;
-		this.telefono_cliente = telefono_cliente;
+		this.cedula = cedula;
+		this.direccion = direccion;
+		this.email = email;
+		this.nombre = nombre;
+		this.telefono = telefono;
 	}
-	public long getCedula_cliente() {
-		return cedula_cliente;
+	public long getCedula() {
+		return cedula;
 	}
-	public void setCedula_cliente(long cedula_cliente) {
-		this.cedula_cliente = cedula_cliente;
+	public void setCedula(long cedula) {
+		this.cedula = cedula;
 	}
-	public String getDireccion_cliente() {
-		return direccion_cliente;
+	public String getDireccion() {
+		return direccion;
 	}
-	public void setDireccion_cliente(String direccion_cliente) {
-		this.direccion_cliente = direccion_cliente;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
-	public String getEmail_cliente() {
-		return email_cliente;
+	public String getEmail() {
+		return email;
 	}
-	public void setEmail_cliente(String email_cliente) {
-		this.email_cliente = email_cliente;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getNombre_cliente() {
-		return nombre_cliente;
+	public String getNombre() {
+		return nombre;
 	}
-	public void setNombre_cliente(String nombre_cliente) {
-		this.nombre_cliente = nombre_cliente;
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
-	public long getTelefono_cliente() {
-		return telefono_cliente;
+	public long getTelefono() {
+		return telefono;
 	}
-	public void setTelefono_cliente(long telefono_cliente) {
-		this.telefono_cliente = telefono_cliente;
+	public void setTelefono(long telefono) {
+		this.telefono = telefono;
 	}
 	@Override
 	public String toString() {
-		return "Cliente[cedula_cliente=" + cedula_cliente + ", direccion_cliente=" + direccion_cliente
-				+ ", email_cliente=" + email_cliente + ", nombre_cliente=" + nombre_cliente + ", telefono_cliente="
-				+ telefono_cliente + "]";
+		return "Cliente[cedula_cliente=" + cedula + ", direccion_cliente=" + direccion
+				+ ", email_cliente=" + email + ", nombre_cliente=" + nombre + ", telefono_cliente="
+				+ telefono + "]";
 	}
     
 }

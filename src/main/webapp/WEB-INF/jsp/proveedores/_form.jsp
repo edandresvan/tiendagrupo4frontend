@@ -7,46 +7,53 @@
 
 
 <c:if test="${fn:length(errores) > 0}">
-	<p>Se presentaron estos errores:</p>
+	<div class="mb-3 form-group col-6">Se presentaron estos errores:</div>
 	<ul>
 		<c:forEach items="${errores}" var="error">
 			<li>${error}</li>
 		</c:forEach>
 	</ul>
 </c:if>
+<center>
+	<form:form action="${action}" method="${method}"
+		modelAttribute="proveedor">
+		<div class="row">
+			<div class="mb-3 form-group col-6">
+				<form:label path="nit" class="form-label">NIT: </form:label>
+				<form:input type="text" path="nit" class="form-control" />
+			</div>
+			<div class="mb-3 form-group col-6">
+				<form:label path="nombre" class="form-label">Nombre: </form:label>
+				<form:input type="text" path="nombre" class="form-control" />
+			</div>
 
-<form:form action="${action}" method="${method}"
-	modelAttribute="proveedor">
-	<p>
-		<form:label path="nit">NIT: </form:label>
-		<form:input type="text" path="nit" />
-	</p>
-	<p>
-		<form:label path="nombre">Nombre: </form:label>
-		<form:input type="text" path="nombre" />
-	</p>
+			<div class="mb-3 form-group col-6">
+				<form:label path="direccion" class="form-label">Dirección: </form:label>
+				<form:input path="direccion" class="form-control" />
+			</div>
 
-	<p>
-		<form:label path="direccion">Dirección: </form:label>
-		<form:input path="direccion" />
-	</p>
+			<div class="mb-3 form-group col-6">
+				<form:label path="ciudad" class="form-label">Ciudad: </form:label>
+				<form:input path="ciudad" class="form-control" />
+			</div>
 
-	<p>
-		<form:label path="ciudad">Ciudad: </form:label>
-		<form:input path="ciudad" />
-	</p>
+			<div class="mb-3 form-group col-6">
+				<form:label path="telefono" class="form-label">Teléfono: </form:label>
+				<form:input path="telefono" class="form-control" />
+			</div>
+		</div>
+		<div class="mb-2">
+			<div class="mb-3 form-group col-6">
+				<input type="submit" value="Guardar"
+					class="btn btn-outline-secondary form-group col-2">
 
-	<p>
-		<form:label path="telefono">Teléfono: </form:label>
-		<form:input path="telefono" />
-	</p>
+				<c:if test="${operacion == 'editar'}">
+					<input type="submit" value="Eliminar"
+						formaction="/proveedores/delete" formmethod="post"
+						class="btn btn-outline-secondary form-group col-2">
+				</c:if>
+			</div>
+		</div>
+	</form:form>
 
-	<p>
-		<input type="submit" value="Guardar">
-
-		<c:if test="${operacion == 'editar'}">
-			<input type="submit" value="Eliminar"
-				formaction="/proveedores/delete" formmethod="post">
-		</c:if>
-	</p>
-</form:form>
+</center>

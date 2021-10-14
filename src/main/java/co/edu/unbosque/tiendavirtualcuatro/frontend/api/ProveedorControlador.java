@@ -50,34 +50,37 @@ public class ProveedorControlador extends ControladorBase {
   @GetMapping
   public String homeProveedores(Optional<String> nit, Model model) {
     Optional<String> parametroNit;
-    if (nit.isPresent() && nit.get().isBlank()) {
+    if (nit.isPresent() && nit.get()
+      .isBlank()) {
       parametroNit = Optional.empty();
     } else {
       parametroNit = nit;
     }
     Flux<ProveedorVO> proveedoresFlux = crearWebClient().get()
-      .uri( uriBuilder -> uriBuilder
+      .uri(uriBuilder -> uriBuilder
         .path(getUri())
         .queryParamIfPresent("nit", parametroNit)
-        .build() )
+        .build())
       .accept(MediaType.APPLICATION_JSON)
       .retrieve()
       .onStatus(status -> status == HttpStatus.NOT_FOUND,
-      response -> Mono.empty())
+        response -> Mono.empty())
       .bodyToFlux(ProveedorVO.class);
     List<ProveedorVO> proveedores = proveedoresFlux.collectList()
       .block();
 
     model.addAttribute("tituloPagina", "Proveedores - Listado");
     model.addAttribute("proveedores", proveedores);
-    
-    if (nit.isPresent() && !nit.get().isBlank()) {
+
+    if (nit.isPresent() && !nit.get()
+      .isBlank()) {
       if (proveedores.isEmpty()) {
-        
-        model.addAttribute("errores", "No hay proveedores con el NIT: " + nit.get());
+
+        model.addAttribute("errores",
+          "No hay proveedores con el NIT: " + nit.get());
       }
     }
-    
+
     return "proveedores/index";
   }
 
@@ -117,54 +120,18 @@ public class ProveedorControlador extends ControladorBase {
   @GetMapping("/nuevo")
   public ModelAndView nuevoProveedor(Model model, HttpServletRequest request) {
     model.addAttribute("tituloPagina", "Proveedores - Nuevo");
-   
-      model.addAttribute("proveedor", new ProveedorVO());
+
+    model.addAttribute("proveedor", new ProveedorVO());
 
     model.addAttribute("action", getUri());
     model.addAttribute("method", "post");
 
     return new ModelAndView("proveedores/nuevo");
   }
-  /*
-  @GetMapping
-  public String getProveedorPorNit(@RequestParam String nit, Model model) {
-    Flux<ProveedorVO> proveedoresFlux = crearWebClient().get()
-        .uri(uriBuilder -> uriBuilder.path(getUri() + "/{nit}")
-          .build(nit))
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .onStatus(status -> status == HttpStatus.NOT_FOUND,
-          response -> Mono.empty())
-        .bodyToFlux(ProveedorVO.class);
-      List<ProveedorVO> proveedores = proveedoresFlux.collectList()
-        .block();
-      
-      if (proveedores.isEmpty()) {
-        model.addAttribute("errores",
-          List.of("No existen proveedores con el NIT " + nit));
-        
-      }
-      model.addAttribute("proveedores", proveedores);
-      return "/proveedores/index";
-  }
-*/
+
   @PostMapping
   public ModelAndView crearProveedor(
       @ModelAttribute("proveedor") ProveedorVO proveedor, ModelMap model) {
-    /*
-     * Mono<List<Proveedor>> proveedoresFlujo =
-     * crearWebClient().post().uri(getUri()).body(proveedor, Proveedor.class)
-     * .retrieve().onStatus(estado -> estado == HttpStatus.BAD_REQUEST, response
-     * -> Mono.just(new Exception())) .bodyToMono(new
-     * ParameterizedTypeReference<List<Proveedor>>() { });
-     */
-    /*
-     * Flux<Proveedor> proveedoresFlux =
-     * crearWebClient().post().uri(getUri()).body(proveedor,
-     * Proveedor.class).retrieve() .onStatus(estado -> estado ==
-     * HttpStatus.BAD_REQUEST, response -> Mono.just(new
-     * Exception("500 error!"))) .bodyToFlux(Proveedor.class);
-     */
     Flux<ProveedorVO> proveedoresFlux = crearWebClient()
       .post()
       .uri(getUri())

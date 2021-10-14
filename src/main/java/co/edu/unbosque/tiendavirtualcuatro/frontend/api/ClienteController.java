@@ -46,19 +46,19 @@ public class ClienteController {
 	  public String crearCliente(Model model,
 	      @ModelAttribute("cliente") ClienteVO cliente) {
 	    boolean valido = false;
-	    if (cliente.getCedula_cliente() <= 1) {
+	    if (cliente.getCedula() <= 1) {
 	      System.out.println("mensaje: la cedula no puede ser menor que 1");
-	    } else if (cliente.getDireccion_cliente() == null || cliente.getDireccion_cliente()
+	    } else if (cliente.getDireccion() == null || cliente.getDireccion()
 	                                                      .isBlank()) {
 	      System.out.println("mensaje: la direccion no puede ser vacio");
 
-	    } else if (cliente.getEmail_cliente() == null || cliente.getEmail_cliente()
+	    } else if (cliente.getEmail() == null || cliente.getEmail()
 	                                                     .isBlank()) {
 	      System.out.println("mensaje: el email no puede ser vacio");
-	    } else if (cliente.getNombre_cliente() == null || cliente.getNombre_cliente()
+	    } else if (cliente.getNombre() == null || cliente.getNombre()
 	                                                    .isBlank()) {
 	      System.out.println("mensaje: el nombre no puede ser vacio");
-	    } else if (cliente.getTelefono_cliente() == 0 || cliente.getTelefono_cliente() == 0)
+	    } else if (cliente.getTelefono() == 0 || cliente.getTelefono() == 0)
 	    	                                              
 	      System.out.println("mensaje: el telefono no puede ser vacio");
 	    	   

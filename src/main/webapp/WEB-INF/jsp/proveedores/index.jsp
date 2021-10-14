@@ -4,8 +4,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <t:plantilla>
-	<h2>Listado de Proveedores</h2>
-	<p><a href="/proveedores/nuevo/">Nuevo Proveedor</a></p>
+	<h2>Portal de Proveedores</h2>
+	<p>
+		<a href="/proveedores/nuevo/" class="btn btn-secondary"">Nuevo
+			Proveedor</a>
+	</p>
 
 	<c:if test="${fn:length(errores) > 0}">
 		<p>Se presentaron estos errores:</p>
@@ -15,16 +18,22 @@
 			</c:forEach>
 		</ul>
 	</c:if>
-	
-	
-	<form action="/proveedores/" method="get">
-	 <p><label>Buscar por NIT:</label><input type="text" name="nit" value=""> 
-	<input type="submit" value="Buscar"></p>
-	</form>
+
+	<center>
+		<form action="/proveedores/" method="get">
+			<div class="mb-3 form-group col-6">
+				<label class="form-label">Buscar por NIT:</label> <input type="text"
+					name="nit" value="" class="form-control" /> <input type="submit"
+					value="Consultar"
+					class="btn btn-outline-secondary form-group col-2">
+			</div>
+		</form>
+	</center>
 
 
+	<h2>Listado de Proveedores</h2>
 
-	<table>
+	<table class="table table-striped">
 		<caption>Listado de los proveedores de productos.</caption>
 		<thead>
 			<tr>

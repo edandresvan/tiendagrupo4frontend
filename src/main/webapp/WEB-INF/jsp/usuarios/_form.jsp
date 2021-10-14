@@ -1,41 +1,58 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-  <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-      <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-        <form:form action="${action}" method="${method}" modelAttribute="usuario">
-          <p>
-            <form:label path="cedula">Cedula: </form:label>
-            <form:input type="text" path="cedula" />
-          </p>
-          <p>
-            <form:label path="usuario">Usuario: </form:label>
-            <form:input type="text" path="usuario" />
-          </p>
-          <p>
-            <form:label path="nombre">Nombre: </form:label>
-            <form:input type="text" path="nombre" />
-          </p>
+<center>
 
-          <p>
-            <form:label path="email">Email: </form:label>
-            <form:input path="email" />
-          </p>
+	<form:form modelAttribute="usuario">
+		<div class="row">
+			<div class="mb-3 form-group col-6">
+				<form:label path="cedula" class="form-label">Cédula:</form:label>
+				<form:input type="text" path="cedula" class="form-control" />
+			</div>
+			<div class="mb-3 form-group col-6">
+				<form:label path="usuario" class="form-label">Usuario:</form:label>
+				<form:input type="text" path="usuario" class="form-control" />
+			</div>
+			<div class="mb-3 form-group col-6">
+				<form:label path="nombre" class="form-label">Nombre:</form:label>
+				<form:input type="text" path="nombre" class="form-control" />
+			</div>
 
-          <p>
-            <form:label path="password">Password: </form:label>
-            <form:input path="password" />
-          </p>
+			<div class="mb-3 form-group col-6">
+				<form:label path="email" class="form-label">Email:</form:label>
+				<form:input path="email" class="form-control" />
+			</div>
 
-          <p>
-            <form:label path="rol">Rol: </form:label>
-            <form:input path="rol" />
-          </p>
+			<div class="mb-3 form-group col-6">
+				<form:label path="password" class="form-label">Password:</form:label>
+				<form:input path="password" class="form-control" />
+			</div>
 
-          <p><input type="submit" value="Guardar">
+			<div class="mb-3 form-group col-6">
+				<form:label path="rol" class="form-label">Rol:</form:label>
+				<form:input path="rol" class="form-control" />
+			</div>
 
-            <c:if test="${operacion == 'editar'}">
-              <input type="submit" value="Eliminar" formaction="/usuarios/delete" formmethod="post">
-            </c:if>
-          </p>
-        </form:form>
+		</div>
+
+		<div class="mb-2">
+			<input type="submit"
+				class="btn btn-outline-secondary form-group col-2" value="Nuevo"
+				formaction="/usuarios/nuevo" formmethod="get" /> <input
+				type="submit" class="btn btn-outline-secondary form-group col-2"
+				value="Crear" formaction="/usuarios/registrarusuario"
+				formmethod="post" <c:if test="${usuario.cedula > 0}">disabled</c:if> />
+			<input type="submit"
+				class="btn btn-outline-secondary form-group col-2"
+				value="Actualizar" formaction="/usuarios/actualizarUsuario"
+				formmethod="post" <c:if test="${usuario.cedula < 1}">disabled</c:if> />
+			<input type="submit"
+				class="btn btn-outline-secondary form-group col-2" value="Borrar"
+				formaction="/usuarios/borrar" formmethod="post"
+				<c:if test="${usuario.cedula < 1}">disabled</c:if> />
+		</div>
+	</form:form>
+</center>

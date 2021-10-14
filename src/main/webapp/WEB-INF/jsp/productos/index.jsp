@@ -4,7 +4,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <t:plantilla>
-	<h2>Listado de Productos</h2>
+	<h2>Portal de Productos</h2>
 
 
 	<c:if test="${fn:length(errores) > 0}">
@@ -16,21 +16,34 @@
 		</ul>
 	</c:if>
 
-	<form action="/productos/cargarcsv" method="post"
-		enctype="multipart/form-data">
-		<input type="file" name="archivocsv"> <input type="submit">
-	</form>
+	<div
+		class="container mt-4border  rounded-lg form-register login font-weight-normal purple-gradient "
+		id="conxtainer">
 
-	<form action="/productos/" method="get">
-		<p>
-			<label>Buscar por Código:</label><input type="text" name="codigo"
-				value=""> <input type="submit" value="Buscar">
-		</p>
-	</form>
+		<form action="/productos/cargarcsv" method="post"
+			enctype="multipart/form-data" class="form-inline pt-2">
+			<div class="row">
 
+				<input type="file" name="archivocsv" class="form-control" /> <input
+					type="submit" value="Cargar" class="btn btn-outline-secondary">
+			</div>
 
+		</form>
+	</div>
+  </br>
+	<center>
+		<form action="/productos/" method="get">
+			<div class="mb-3 form-group col-6">
+				<label>Buscar por Código:</label><input type="text" name="codigo"
+					class="form-control" /> <input type="submit" value="Consultar"
+					class="btn btn-outline-secondary form-group col-2" />
+			</div>
+		</form>
+	</center>
 
-	<table>
+	<h2>Listado de Productos</h2>
+
+	<table class="table table-striped">
 		<caption>Listado de los productos existentes.</caption>
 		<thead>
 			<tr>
