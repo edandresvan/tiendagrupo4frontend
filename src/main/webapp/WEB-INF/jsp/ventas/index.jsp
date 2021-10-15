@@ -8,24 +8,24 @@
 	<div
 		class="d-block color-block container mt-4border border-light rounded-lg font-weight-normal purple-gradient container-md form-register "
 		id="conxtainer">
-		<form action="/TiendaVirtualFrontEndGrupo4/listaUsuarios.jsp"
-			class="form-inline pt-2" method="post">
+		<form action="/clientes/"
+			class="form-inline pt-2" method="get">
 			<div class="content col-md-11 mb-2">
 				<div class="row">
 
 					<div class="mb-3 form-group col-md-3">
-						<label for="email">Cédula <input type="email"
-							class="form-control " id="email"></label>
+						<label for="email">Cédula <input type="cedula"
+							class="form-control " id="cedula"></label>
 					</div>
 					<div class="mb-3 form-group col-md-2">
 						<button type="submit" class="btn btn-outline-secondary ml-2">consultar</button>
 					</div>
 					<div class="mb-3 form-group col-md-4">
-						<label for="pwd">Cliente<input type="password"
+						<label for="pwd">Cliente<input type="text"
 							class="form-control" id="pwd"></label>
 					</div>
 					<div class="mb-3 form-group col-md-3">
-						<label for="pwd">Consecutivo <input type="password"
+						<label for="pwd">Consecutivo <input type="text"
 							class="form-control" id="pwd"></label>
 					</div>
 				</div>
@@ -58,13 +58,13 @@
 						<button type="submit" class="btn btn-outline-secondary">consultar</button>
 					</div>
 					<div class=" form-group col-md-4">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 					<div class=" form-group col-md-1">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 					<div class=" form-group col-md-2">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 				</div>
 				<!-- Producto 2 -->
@@ -76,13 +76,13 @@
 						<button type="submit" class="btn btn-outline-secondary">consultar</button>
 					</div>
 					<div class=" form-group col-md-4">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 					<div class=" form-group col-md-1">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 					<div class=" form-group col-md-2">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 				</div>
 				<!-- Producto 3 -->
@@ -94,13 +94,13 @@
 						<button type="submit" class="btn btn-outline-secondary">consultar</button>
 					</div>
 					<div class=" form-group col-md-4">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 					<div class=" form-group col-md-1">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 					<div class=" form-group col-md-2">
-						<input type="password" class="form-control" id="pwd">
+						<input type="text" class="form-control" id="pwd">
 					</div>
 				</div>
 
@@ -126,7 +126,35 @@
 						</div>
 
 					</div>
-
+	<h2>Listado de las ventas del sistema</h2>
+	<table class="table table-striped">
+		<caption>Listado de las ventas del sistema</caption>
+		<thead>
+			<tr>
+				<th scope="col">codigo_venta</th>
+				<th scope="col">cedula_cliente</th>
+				<th scope="col">cedula_usuario </th>
+				<th scope="col">total_venta</th>
+				<th scope="col">iva_venta</th>
+				<th scope="col">valor_venta</th>				
+				<th scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${ventas}" var="venta">
+				<tr>
+					<td>${venta.codigo_venta}</td>
+					<td>${venta.cedula_cliente}</td>
+					<td>${venta.cedula_usuario}</td>
+					<td>${venta.total_venta}</td>
+					<td>${venta.iva_venta}</td>
+					<td>${venta.valor_venta}</td>					
+					<td><a href="/ventas/?cedula=${venta.cedula_cliente}">Editar</a></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 
 				</div>
 			</div>
