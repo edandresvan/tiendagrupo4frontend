@@ -19,13 +19,13 @@
 			</div>
 
 			<div class="mb-3 form-group col-6">
-				<form:label path="email" class="form-label">Email:</form:label>
-				<form:input path="email" class="form-control" />
+				<form:label path="direccion" class="form-label">Dirección:</form:label>
+				<form:input path="direccion" class="form-control" />
 			</div>
 
 			<div class="mb-3 form-group col-6">
-				<form:label path="direccion" class="form-label">Dirección:</form:label>
-				<form:input path="direccion" class="form-control" />
+				<form:label path="email" class="form-label">Email:</form:label>
+				<form:input path="email" class="form-control" />
 			</div>
 
 			<div class="mb-3 form-group col-6">
@@ -45,7 +45,7 @@
 				formmethod="post" <c:if test="${cliente.cedula > 0}">disabled</c:if> />
 			<input type="submit"
 				class="btn btn-outline-secondary form-group col-2"
-				value="Actualizar" formaction="/clientes/actualizarcliente"
+				value="Actualizar" formaction="/clientes/actualizarCliente"
 				formmethod="post" <c:if test="${cliente.cedula < 1}">disabled</c:if> />
 			<input type="submit"
 				class="btn btn-outline-secondary form-group col-2" value="Borrar"

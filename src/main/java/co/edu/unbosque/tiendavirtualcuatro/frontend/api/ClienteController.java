@@ -1,6 +1,8 @@
 package co.edu.unbosque.tiendavirtualcuatro.frontend.api;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,9 +24,7 @@ import com.google.gson.reflect.TypeToken;
 
 
 import co.edu.unbosque.tiendavirtualcuatro.frontend.dao.ClienteDAO;
-import co.edu.unbosque.tiendavirtualcuatro.frontend.dao.UsuarioDAO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ClienteVO;
-import co.edu.unbosque.tiendavirtualcuatro.frontend.model.UsuarioVO;
 
 
 
@@ -36,13 +36,25 @@ public class ClienteController {
 	  private ClienteDAO objUsrDao;
 
 	  @GetMapping
-	  public String getClienteHome(Model model) {
-	    model.addAttribute("cliente", new ClienteVO());
+	  public String getClienteHome(@RequestParam Optional<String> cedula, Model model) {
+
+	    if (cedula.isPresent() && !cedula.get()
+	      .isBlank()) {
+
+	      ClienteVO cliente = this.objUsrDao.getClientePorCedula(
+	        Long.parseLong(cedula.get()));
+
+	      model.addAttribute("cliente", cliente);
+	    } else {
+	      model.addAttribute("cliente", new ClienteVO());
+	    }
+	    List<ClienteVO> clientes = this.objUsrDao.listaDeClientes();
+	    model.addAttribute("clientes", clientes);
 	    return "/clientes/index";
 	  }
 	  
 	  @GetMapping("/nuevo")
-	  public ModelAndView nuevoProveedor(Model model, HttpServletRequest request) {
+	  public ModelAndView nuevoCliente(Model model, HttpServletRequest request) {
 
 	    model.addAttribute("cliente", new ClienteVO());
 
