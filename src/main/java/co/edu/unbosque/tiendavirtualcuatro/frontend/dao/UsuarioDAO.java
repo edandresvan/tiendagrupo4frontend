@@ -5,8 +5,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,8 +21,11 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.google.gson.reflect.TypeToken;
 
+import co.edu.unbosque.tiendavirtualcuatro.frontend.api.GlobalExceptionHandler;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ProveedorVO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.UsuarioVO;
 import reactor.core.publisher.Flux;
@@ -119,7 +125,7 @@ public class UsuarioDAO {
       WebClient webClient = WebClient.create(URL);
       UsuarioVO objUsuario = null;
       Mono<UsuarioVO> response = webClient
-          .put()
+        .put()
         .uri("/usuarios/actualizarUsuario")
         .body(Mono.just(usuarioVO), UsuarioVO.class)
         .retrieve()
@@ -134,17 +140,44 @@ public class UsuarioDAO {
       return null;
     }
   }
-  
+
   public void eliminarUsuario(UsuarioVO usuario) {
     WebClient.create(URL)
-        .delete()
-        .uri("/usuarios/borrar/" + usuario.getCedula())
-        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        .bodyToMono(UsuarioVO.class)
-        .block();
+      .delete()
+      .uri("/usuarios/borrar/" + usuario.getCedula())
+      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+      .accept(MediaType.APPLICATION_JSON)
+      .retrieve()
+      .bodyToMono(UsuarioVO.class)
+      .block();
 
+  }
+
+  public UsuarioVO getUsuarioPorAliasUsuario(String aliasUsuario) {
+    Map<String, String> aliasUsuarioMap = new HashMap<>();
+    aliasUsuarioMap.put("usuario", aliasUsuario);
+
+    WebClient webClient = WebClient.create(URL);
+
+    Mono<UsuarioVO> usuarioMono = webClient
+      .post()
+      .uri(uriBuilder -> uriBuilder
+        .path("/usuarios/getporaliasusuario")
+        .build())
+      .contentType(MediaType.APPLICATION_JSON)
+      .body(Mono.just(aliasUsuarioMap), Map.class)
+      .accept(MediaType.APPLICATION_JSON)
+      .retrieve()
+      .onStatus(status -> status == HttpStatus.NOT_FOUND,
+        response -> Mono.empty())
+      .bodyToMono(UsuarioVO.class);
+
+    Logger logger = LoggerFactory
+        .getLogger(GlobalExceptionHandler.class);
+    logger.info("aliasUsuario: " + aliasUsuarioMap.get("usuario"));
+    
+    UsuarioVO usuario = usuarioMono.block();
+    return usuario;
   }
 
 }
