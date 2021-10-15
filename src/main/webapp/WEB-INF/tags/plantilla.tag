@@ -1,4 +1,8 @@
 <%@tag description="Plantilla JSP" pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+
 <!DOCTYPE html>
 <html lang="es">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -32,6 +36,17 @@
 <body>
 
 	<header>
+		<div>
+
+			<security:authorize access="isAuthenticated()">
+				<sec:authentication var="usuario" property="principal" />
+				<h5>
+					Autenticado como: ${usuario.username}. Rol: ${usuario.authorities}
+				<a class="btn btn-info"  role="button" href="/logout">Salir</a>
+				</h5>
+
+			</security:authorize>
+		</div>
 		<div>
 			<ul class="nav nav-tabs nav-justified ">
 				<li class="nav-item"><a class="nav-link" href="/usuarios">Usuarios</a></li>
