@@ -33,7 +33,10 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class UsuarioDAO {
-  private static final String URL = "http://localhost:5000";
+  /**
+   * URL del servidor del backend.
+   */
+  public static String urlBackend;
 
   @Autowired
   private WebClient webClient;
@@ -41,10 +44,10 @@ public class UsuarioDAO {
   public UsuarioVO crearUsuario(UsuarioVO usuarioVO) {
 
     try {
-      WebClient webClient = WebClient.create(URL);
+      WebClient webClient = WebClient.create(urlBackend);
       UsuarioVO objUsuario = null;
       Mono<UsuarioVO> response = webClient.post()
-        .uri(URL + "/usuarios/registrarUsuario")
+        .uri(urlBackend + "/usuarios/registrarUsuario")
         .body(Mono.just(usuarioVO), UsuarioVO.class)
         .retrieve()
         .bodyToMono(UsuarioVO.class);
@@ -63,7 +66,7 @@ public class UsuarioDAO {
 
     try {
 
-      URL url = new URL(URL + "/usuarios/listaDeUsuarios");// your url i.e fetch
+      URL url = new URL(urlBackend + "/usuarios/listaDeUsuarios");// your url i.e fetch
                                                            // data from .
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
       conn.setRequestMethod("GET");
@@ -90,10 +93,10 @@ public class UsuarioDAO {
   }
 
   public UsuarioVO consultar(UsuarioVO usr) {
-    WebClient webClient = WebClient.create(URL);
+    WebClient webClient = WebClient.create(urlBackend);
     UsuarioVO objUsuario = null;
     Mono<UsuarioVO> response = webClient.get()
-      .uri(URL + "/buscar/?cedulau=" + usr.getCedula())
+      .uri(urlBackend + "/buscar/?cedulau=" + usr.getCedula())
       .retrieve()
       .bodyToMono(UsuarioVO.class);
     objUsuario = response.block();
@@ -102,7 +105,7 @@ public class UsuarioDAO {
   }
 
   public UsuarioVO getUsuarioPorCedula(long cedula) {
-    WebClient webClient = WebClient.create(URL);
+    WebClient webClient = WebClient.create(urlBackend);
 
     Mono<UsuarioVO> usuarioMono = webClient
       .get()
@@ -122,7 +125,7 @@ public class UsuarioDAO {
   public UsuarioVO editarUsuario(UsuarioVO usuarioVO) {
 
     try {
-      WebClient webClient = WebClient.create(URL);
+      WebClient webClient = WebClient.create(urlBackend);
       UsuarioVO objUsuario = null;
       Mono<UsuarioVO> response = webClient
         .put()
@@ -142,7 +145,7 @@ public class UsuarioDAO {
   }
 
   public void eliminarUsuario(UsuarioVO usuario) {
-    WebClient.create(URL)
+    WebClient.create(urlBackend)
         .delete()
         .uri("/usuarios/borrar/" + usuario.getCedula())
         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -156,7 +159,7 @@ public class UsuarioDAO {
     Map<String, String> aliasUsuarioMap = new HashMap<>();
     aliasUsuarioMap.put("usuario", aliasUsuario);
 
-    WebClient webClient = WebClient.create(URL);
+    WebClient webClient = WebClient.create(urlBackend);
 
     Mono<UsuarioVO> usuarioMono = webClient
       .post()

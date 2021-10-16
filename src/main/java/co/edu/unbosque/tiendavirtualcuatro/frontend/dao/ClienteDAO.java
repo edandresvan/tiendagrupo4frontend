@@ -25,7 +25,11 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class ClienteDAO {
-  private static final String URL = "http://localhost:5000";
+  
+  /**
+   * URL del servidor del backend.
+   */
+  public static String urlBackend;
 
   @Autowired
   private WebClient webClient;
@@ -33,10 +37,10 @@ public class ClienteDAO {
   public ClienteVO crearCliente(ClienteVO clienteVO) {
 
     try {
-      WebClient webClient = WebClient.create(URL);
+      WebClient webClient = WebClient.create(urlBackend);
       ClienteVO objCliente = null;
       Mono<ClienteVO> response = webClient.post()
-        .uri(URL + "/clientes/registrarCliente")
+        .uri(urlBackend + "/clientes/registrarCliente")
         .body(Mono.just(clienteVO), ClienteVO.class)
         .retrieve()
         .bodyToMono(ClienteVO.class);
@@ -55,7 +59,7 @@ public class ClienteDAO {
 
 	    try {
 
-	      URL url = new URL(URL + "/clientes/listaDeClientes");// your url i.e fetch
+	      URL url = new URL(urlBackend + "/clientes/listaDeClientes");// your url i.e fetch
 	                                                           // data from .
 	      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	      conn.setRequestMethod("GET");
@@ -82,10 +86,10 @@ public class ClienteDAO {
 	  }  
   
   public ClienteVO consultar(ClienteVO usr) {
-	    WebClient webClient = WebClient.create(URL);
+	    WebClient webClient = WebClient.create(urlBackend);
 	    ClienteVO objCliente = null;
 	    Mono<ClienteVO> response = webClient.get()
-	      .uri(URL + "/buscar/?cedulausr=" + usr.getCedula())
+	      .uri(urlBackend + "/buscar/?cedulausr=" + usr.getCedula())
 	      .retrieve()
 	      .bodyToMono(ClienteVO.class);
 	    objCliente = response.block();
@@ -93,7 +97,7 @@ public class ClienteDAO {
 	    return objCliente;
 	  }
   public ClienteVO getClientePorCedula(long cedula) {
-	    WebClient webClient = WebClient.create(URL);
+	    WebClient webClient = WebClient.create(urlBackend);
 
 	    Mono<ClienteVO> clienteMono = webClient
 	      .get()
@@ -112,7 +116,7 @@ public class ClienteDAO {
   public ClienteVO editarCliente(ClienteVO clienteVO) {
 
 	    try {
-	      WebClient webClient = WebClient.create(URL);
+	      WebClient webClient = WebClient.create(urlBackend);
 	      ClienteVO objCliente = null;
 	      Mono<ClienteVO> response = webClient
 	          .put()
@@ -131,7 +135,7 @@ public class ClienteDAO {
 	    }
   }
   public void eliminarCliente(ClienteVO cliente) {
-	    WebClient.create(URL)
+	    WebClient.create(urlBackend)
 	        .delete()
 	        .uri("/clientes/borrar/" + cliente.getCedula())
 	        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
