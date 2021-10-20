@@ -5,6 +5,6 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <t:plantilla>
-	<p>Bienvenidos</p>
+	<h1>Bienvenido</h1>
 
 </t:plantilla>

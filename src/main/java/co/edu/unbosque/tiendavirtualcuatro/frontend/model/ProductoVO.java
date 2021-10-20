@@ -5,6 +5,11 @@ package co.edu.unbosque.tiendavirtualcuatro.frontend.model;
 
 import java.util.Map;
 
+/**
+ * Representa un producto que la tienda ofrece a sus clientes.
+ * 
+ * @author 
+ */
 public class ProductoVO {
 
   /**

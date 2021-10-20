@@ -5,7 +5,9 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-
+<c:if test="${not empty mensajeExito}">
+	<div class="alert alert-success" role="alert">${mensajeExito}</div>
+</c:if>
 
 <c:if test="${fn:length(errores) > 0}">
 	<div class="alert alert-danger" role="alert">

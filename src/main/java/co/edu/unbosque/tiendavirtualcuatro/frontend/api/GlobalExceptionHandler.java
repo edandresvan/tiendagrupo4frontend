@@ -34,6 +34,11 @@ public class GlobalExceptionHandler {
     logger.error("ServletRequestBindingException occurred: " + e.getMessage());
     return "validation_error";
   }
+  
+  @ExceptionHandler(IllegalArgumentException.class)
+  public void illegalArgumentException(IllegalArgumentException iae) {
+    logger.error(iae.getMessage());
+  }
 
   @ExceptionHandler(WebClientResponseException.class)
   public RedirectView webClientResponseException(WebClientResponseException e,
@@ -56,12 +61,12 @@ public class GlobalExceptionHandler {
       .getURI()
       .getPath());
     logger.error("body " + e.getResponseBodyAsString());
-    
+
     UriComponentsBuilder uriBuilder = UriComponentsBuilder
-        .fromPath(e.getRequest()
-          .getURI()
-          .getPath());
-    
+      .fromPath(e.getRequest()
+        .getURI()
+        .getPath());
+
     // Evitar procesar una respuesta 404 No Encontrado
     if (e.getStatusCode() != HttpStatus.NOT_FOUND) {
       Gson gson = new Gson();
@@ -73,16 +78,20 @@ public class GlobalExceptionHandler {
 
       if (e.getRequest()
         .getMethod() == HttpMethod.POST) {
-        uriBuilder.pathSegment("nuevo");
-        
+
+        if (e.getRequest()
+          .getURI()
+          .getPath()
+          .equalsIgnoreCase("proveedores")) {
+          uriBuilder.pathSegment("nuevo");
+        } else {
+          //uriBuilder.pathSegment("index");
+        }
 
       }
 
     }
-    
-    
 
-    
     return new RedirectView(uriBuilder.toUriString(), true);
 
   }

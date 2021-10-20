@@ -6,20 +6,24 @@
 <t:plantilla>
 	<h2>Portal de Proveedores</h2>
 	<p>
-		<a href="/proveedores/nuevo/" class="btn btn-secondary"">Nuevo
+		<a href="/proveedores/nuevo/" class="btn btn-info" role="button">Nuevo
 			Proveedor</a>
 	</p>
 
-	<c:if test="${fn:length(errores) > 0}">
-		<div class="alert alert-danger" role="alert">
-			<p>Se presentaron estos errores:</p>
-			<ul>
-				<c:forEach items="${errores}" var="error">
-					<li>${error}</li>
-				</c:forEach>
-			</ul>
-		</div>
-	</c:if>
+<c:if test="${not empty mensajeExito}">
+  <div class="alert alert-success" role="alert">${mensajeExito}</div>
+</c:if>
+
+<c:if test="${fn:length(errores) > 0}">
+  <div class="alert alert-danger" role="alert">
+    <div class="">Ocurrieron estos errores:</div>
+    <ul>
+      <c:forEach items="${errores}" var="error">
+        <li>${error}</li>
+      </c:forEach>
+    </ul>
+  </div>
+</c:if>
 
 	<center>
 		<form action="/proveedores/" method="get">

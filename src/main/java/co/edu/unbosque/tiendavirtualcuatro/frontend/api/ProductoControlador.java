@@ -94,30 +94,30 @@ public class ProductoControlador extends ControladorBase {
   @PostMapping("/cargarcsv")
   public ModelAndView cargarCsv(
       @RequestParam("archivocsv") MultipartFile archivoCsv,
-      RedirectAttributes redirectAttributes) throws Exception {
+      RedirectAttributes redirectAttributes) throws IllegalArgumentException, Exception {
 
     if (!archivoCsv.isEmpty()) {
       if (!archivoCsv.isEmpty()) {
 
         List<ProductoVO> productosParaAgregar = new ArrayList<>();
         try (Scanner scanner = new Scanner(archivoCsv.getInputStream());) {
+          int indiceFila = 0;
           while (scanner.hasNextLine()) {
-            productosParaAgregar
-              .add(getProductoDesdeLineaCsv(scanner.nextLine()));
+            productosParaAgregar.add(getProductoDesdeLineaCsv(scanner.nextLine()));
+            indiceFila++;
           }
-          
-          crearWebClient().delete()
-              .uri(getUri())
-              .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-              .accept(MediaType.APPLICATION_JSON)
-              .retrieve()
-              .bodyToFlux(ProductoVO.class)
-              .collectList()
-              .block();
 
-          
+          crearWebClient().delete()
+            .uri(getUri())
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .bodyToFlux(ProductoVO.class)
+            .collectList()
+            .block();
+
           for (ProductoVO producto : productosParaAgregar) {
-            
+
             Flux<ProductoVO> productosFlux = crearWebClient()
               .post()
               .uri("/productos")
@@ -127,10 +127,15 @@ public class ProductoControlador extends ControladorBase {
               .accept(MediaType.APPLICATION_JSON)
               .retrieve()
               .bodyToFlux(ProductoVO.class);
-            List<ProductoVO> productos = productosFlux.collectList().block();
-            
+            List<ProductoVO> productos = productosFlux.collectList()
+              .block();
+            redirectAttributes.addFlashAttribute("mensajeExito",
+              "Productos Agregados");
           }
 
+        } catch (IllegalArgumentException iae) {
+          throw new IllegalArgumentException(
+            String.format("Error en la línea CSV {%s}: ", iae.getMessage()));
         }
       }
     }
@@ -138,28 +143,32 @@ public class ProductoControlador extends ControladorBase {
     return new ModelAndView("redirect:/productos");
   }
 
-  public ProductoVO getProductoDesdeLineaCsv(String linea) throws Exception {
+  public ProductoVO getProductoDesdeLineaCsv(String linea) 
+      throws IllegalArgumentException {
     ProductoVO producto = new ProductoVO();
     try (Scanner scannerLinea = new Scanner(linea)) {
       scannerLinea.useDelimiter(",");
-      int index = 0;
+      int indiceColumna = 0;
       while (scannerLinea.hasNext()) {
-        String data = scannerLinea.next();
-        if (index == 0)
-          producto.setCodigo(Long.parseLong(data));
-        else if (index == 1)
-          producto.setNombre(data);
-        else if (index == 2)
-          producto.setNitProveedor(Long.parseLong(data));
-        else if (index == 3)
-          producto.setPrecioCompra(Double.parseDouble(data));
-        else if (index == 4)
-          producto.setIvaCompra(Double.parseDouble(data));
-        else if (index == 5)
-          producto.setPrecioVenta(Double.parseDouble(data));
-        else
-          throw new Exception("datos invalidos para producto: " + data);
-        index++;
+        String dato = scannerLinea.next();
+        if (indiceColumna == 0) {
+          producto.setCodigo(Long.parseLong(dato));
+        } else if (indiceColumna == 1) {
+          producto.setNombre(dato);
+        } else if (indiceColumna == 2) {
+          producto.setNitProveedor(Long.parseLong(dato));
+        } else if (indiceColumna == 3) {
+          producto.setPrecioCompra(Double.parseDouble(dato));
+        } else if (indiceColumna == 4) {
+          producto.setIvaCompra(Double.parseDouble(dato));
+        } else if (indiceColumna == 5) {
+          producto.setPrecioVenta(Double.parseDouble(dato));
+        } else {
+          throw new IllegalArgumentException(
+            String.format("Error: Hay un atributo es inválido para un producto: Columna: {%s} = {%s}", 
+              indiceColumna, dato));
+        }
+        indiceColumna++;
       }
     }
     return producto;
