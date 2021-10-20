@@ -1,6 +1,8 @@
 package co.edu.unbosque.tiendavirtualcuatro.frontend.api;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,12 +19,12 @@ import reactor.core.publisher.Mono;
 @Controller
 @RequestMapping("/reportes")
 public class ReporteControlador extends ControladorBase {
-  
+
   public ReporteControlador() {
     super();
     setUri("reportes");
   }
-  
+
   @GetMapping
   public String reporteHome(Model model) {
     return "reportes/index";
@@ -31,19 +33,35 @@ public class ReporteControlador extends ControladorBase {
   @GetMapping("/ventasporcliente")
   public String reporteVentasPorCliente(Model model) {
     Flux<TotalVentaPorClienteDTO> ventasClienteFlux = crearWebClient().get()
-        .uri(uriBuilder -> uriBuilder
-          .pathSegment(getUri(), "ventasporcliente")
-          .build())
-        .accept(MediaType.APPLICATION_JSON)
-        .retrieve()
-        //.onStatus(status -> status == HttpStatus.NOT_FOUND,
-        //  response -> Mono.empty())
-        .bodyToFlux(TotalVentaPorClienteDTO.class);
-      List<TotalVentaPorClienteDTO> ventasCliente = ventasClienteFlux.collectList()
-        .block();
+      .uri(uriBuilder -> uriBuilder
+        .pathSegment(getUri(), "ventasporcliente")
+        .build())
+      .accept(MediaType.APPLICATION_JSON)
+      .retrieve()
+      // .onStatus(status -> status == HttpStatus.NOT_FOUND,
+      // response -> Mono.empty())
+      .bodyToFlux(TotalVentaPorClienteDTO.class);
+    List<TotalVentaPorClienteDTO> ventasCliente = ventasClienteFlux
+      .collectList()
+      .block();
 
-      model.addAttribute("tituloPagina", "Ventas por Cliente - Reporte");
-      model.addAttribute("ventasCliente", ventasCliente);
+    model.addAttribute("tituloPagina", "Ventas por Cliente - Reporte");
+    model.addAttribute("ventasCliente", ventasCliente);
+
+    Flux<Map> totalGlobalVentasFlux = crearWebClient().get()
+      .uri(uriBuilder -> uriBuilder
+        .pathSegment(getUri(), "totalglobalventas")
+        .build())
+      .accept(MediaType.APPLICATION_JSON)
+      .retrieve()
+      // .onStatus(status -> status == HttpStatus.NOT_FOUND,
+      // response -> Mono.empty())
+      .bodyToFlux(Map.class);
+    List<Map> totalGlobalVentas = totalGlobalVentasFlux.collectList()
+      .block();
+    model.addAttribute("totalGlobalVentas",
+      totalGlobalVentas.get(0)
+        .get("totalGlobalVentas"));
     return "reportes/ventasporcliente";
   }
 }

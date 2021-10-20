@@ -86,7 +86,8 @@ public class ProveedorControlador extends ControladorBase {
 
   @GetMapping("/{nit}")
   public ModelAndView mostrarProveedor(@PathVariable String nit,
-      ModelMap model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+      ModelMap model, HttpServletRequest request,
+      RedirectAttributes redirectAttributes) {
 
     Flux<ProveedorVO> proveedoresFlux = crearWebClient().get()
       .uri(uriBuilder -> uriBuilder.path(getUri() + "/{nit}")
@@ -111,7 +112,7 @@ public class ProveedorControlador extends ControladorBase {
       model.addAttribute("action", getUri() + "/put");
       model.addAttribute("method", "post");
       model.addAttribute("operacion", "editar");
-     
+
       rutaRedirigida = "" + getUri() + "/editar";
     }
     // return "proveedores/editar";
@@ -144,7 +145,6 @@ public class ProveedorControlador extends ControladorBase {
       .retrieve()
       .bodyToFlux(ProveedorVO.class);
 
-    
     List<ProveedorVO> proveedores = proveedoresFlux.collectList()
       .block();
     if (proveedores.get(0) != null) {
@@ -159,8 +159,9 @@ public class ProveedorControlador extends ControladorBase {
   }
 
   @PostMapping("/put")
-  public ModelAndView editarProveedor(
-      @ModelAttribute("proveedor") ProveedorVO proveedor, ModelMap model) {
+  public RedirectView editarProveedor(
+      @ModelAttribute("proveedor") ProveedorVO proveedor, ModelMap model,
+      RedirectAttributes redirectAttributes) {
     Flux<ProveedorVO> proveedoresFlux = crearWebClient().put()
       .uri(getUri() + "/" + proveedor.getNit())
       .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -174,11 +175,13 @@ public class ProveedorControlador extends ControladorBase {
 
     // model.addAttribute("tituloPagina", "Proveedores - Editar");
     model.addAttribute("proveedor", proveedores.get(0));
+    redirectAttributes.addFlashAttribute("mensajeExito",
+      "Proveedor modificado");
     // return "proveedores/editar"; + proveedores.get(0).getNit();
-    return new ModelAndView(
-      "redirect:" + this.getUri() + "/" + proveedores.get(0)
+    return new RedirectView(
+      "/proveedores/" + proveedores.get(0)
         .getNit(),
-      model);
+      true);
 
   }
 

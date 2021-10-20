@@ -3,6 +3,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <t:plantilla>
 
@@ -34,8 +35,9 @@
 				</tbody>
 			</table>
 			<div class="mb-3 mt-3 form-inline d-block float-right">
-				<label for="tot_venta">Total ventas $<input type="number"
-					class="form-control ml-4 " id="tot_venta"></label>
+			
+				<label for="tot_venta">Total ventas $</label><fmt:formatNumber type = "currency" 
+          value="${totalGlobalVentas}" />
 			</div>
 		</div>
 
