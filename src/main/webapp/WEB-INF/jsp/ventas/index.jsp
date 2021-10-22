@@ -24,7 +24,7 @@
 	<div
 		class="d-block color-block container mt-4border border-light rounded-lg font-weight-normal purple-gradient container-md form-register "
 		id="conxtainer">
-		<form:form action="/" method="get" modelAttribute="venta">
+		<form:form action="/ventas" method="get" modelAttribute="venta">
 
 			<div class="content col-md-11 mb-2">
 				<div class="row">
@@ -38,8 +38,9 @@
 						<button type="submit" class="btn btn-outline-secondary ml-2">consultar</button>
 					</div>
 					<div class="mb-3 form-group col-md-4">
-						<label for="pwd">Cliente<input type="text"
-							class="form-control" id="pwd"></label>
+					
+						<label for="">Cliente<input type="text"
+							class="form-control" id="d" value="${datosAdicionales['clienteNombre']}"></label>
 					</div>
 					<div class="mb-3 form-group col-md-3">
 						<form:label path="codigo" for="codigo">Consecutivo <form:input
@@ -96,7 +97,7 @@
 			<div class="content row col-md-12 mt-4 ">
 				<div class="row justify-content-center ">
 					<div class="col-md-7 justify-content-center text-center mt-2">
-						<button type="submit" class="btn btn-outline-secondary btn-lg">Confirmar</button>
+						<input type="submit" formaction="/ventas" formmethod="post" value="Confirmar" class="btn btn-outline-secondary btn-lg"></input>
 					</div>
 					<div class="d-block row mb-3 col-md-5 ">
 						<div class="float-right">
@@ -121,9 +122,7 @@
 				</div>
 			</div>
 
-			<input type="submit" value="Guardar"
-				class="btn btn-outline-secondary form-group col-2"
-				formaction="/guardar" formmethod="post">
+			
 		</form:form>
 	</div>
 	
@@ -141,7 +140,7 @@
               </tr>
             </thead>
             <tbody>
-              <c:forEach items="${ventas}" var="ventaExistente">
+              <c:forEach items="${ventasExistentes}" var="ventaExistente">
                 <tr>
                   <td><a href="/ventas/${ventaExistente.codigo}">${ventaExistente.codigo}</a></td>
                   <td>${ventaExistente.cedulaCliente}</td>

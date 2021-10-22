@@ -96,7 +96,7 @@ public class UsuarioDAO {
     WebClient webClient = WebClient.create(urlBackend);
     UsuarioVO objUsuario = null;
     Mono<UsuarioVO> response = webClient.get()
-      .uri(urlBackend + "/buscar/?cedulau=" + usr.getCedula())
+      .uri(urlBackend  + "/usuarios/buscar/?cedulau=" + usr.getCedula())
       .retrieve()
       .bodyToMono(UsuarioVO.class);
     objUsuario = response.block();
