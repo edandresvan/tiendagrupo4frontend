@@ -3,19 +3,36 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <t:plantilla>
+
+	<c:if test="${not empty mensajeExito}">
+		<div class="alert alert-success" role="alert">${mensajeExito}</div>
+	</c:if>
+
+	<c:if test="${fn:length(errores) > 0}">
+		<div class="alert alert-danger" role="alert">
+			<div class="">Se presentaron estos errores:</div>
+			<ul>
+				<c:forEach items="${errores}" var="error">
+					<li>${error}</li>
+				</c:forEach>
+			</ul>
+		</div>
+	</c:if>
 	<div
 		class="d-block color-block container mt-4border border-light rounded-lg font-weight-normal purple-gradient container-md form-register "
 		id="conxtainer">
-		<form action="/clientes/"
-			class="form-inline pt-2" method="get">
+		<form:form action="/" method="get" modelAttribute="venta">
+
 			<div class="content col-md-11 mb-2">
 				<div class="row">
-
 					<div class="mb-3 form-group col-md-3">
-						<label for="email">Cédula <input type="cedula"
-							class="form-control " id="cedula"></label>
+						<form:label path="cedulaCliente" for="cedulaCliente">Cédula <form:input
+								path="cedulaCliente" type="text" class="form-control "
+								id="cedula"></form:input>
+						</form:label>
 					</div>
 					<div class="mb-3 form-group col-md-2">
 						<button type="submit" class="btn btn-outline-secondary ml-2">consultar</button>
@@ -25,140 +42,88 @@
 							class="form-control" id="pwd"></label>
 					</div>
 					<div class="mb-3 form-group col-md-3">
-						<label for="pwd">Consecutivo <input type="text"
-							class="form-control" id="pwd"></label>
+						<form:label path="codigo" for="codigo">Consecutivo <form:input
+								path="codigo" type="text" class="form-control" id="codigo"></form:input>
+						</form:label>
 					</div>
-				</div>
-
-
-				<div class="row">
-					<div class="form-group col-md-3 ">
-						<label for="" class="w-100">Cod. Producto </label>
-					</div>
-					<!-- &nbsp; == espacio en html para no dejar div en blanco-->
-					<div class="form-group col-md-2 mb-2">
-						<label class="w-100"> &nbsp; </label>
-					</div>
-					<div class=" form-group col-md-4 ">
-						<label for="" class="w-100 ">Nombre Producto</label>
-					</div>
-					<div class=" form-group col-md-1 ">
-						<label for="" class="w-100">Cantidad</label>
-					</div>
-					<div class=" form-group col-md-2">
-						<label for="" class="w-100">Valor Total</label>
-					</div>
-				</div>
-				<!-- Producto 1 -->
-				<div class="row">
-					<div class="form-group col-md-3 pr-2">
-						<input type="email" class="form-control" id="email">
-					</div>
-					<div class="form-group col-md-2">
-						<button type="submit" class="btn btn-outline-secondary">consultar</button>
-					</div>
-					<div class=" form-group col-md-4">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-					<div class=" form-group col-md-1">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-					<div class=" form-group col-md-2">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-				</div>
-				<!-- Producto 2 -->
-				<div class="row">
-					<div class="form-group col-md-3">
-						<input type="email" class="form-control" id="email">
-					</div>
-					<div class="form-group col-md-2">
-						<button type="submit" class="btn btn-outline-secondary">consultar</button>
-					</div>
-					<div class=" form-group col-md-4">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-					<div class=" form-group col-md-1">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-					<div class=" form-group col-md-2">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-				</div>
-				<!-- Producto 3 -->
-				<div class="row">
-					<div class="form-group col-md-3">
-						<input type="email" class="form-control" id="email">
-					</div>
-					<div class="form-group col-md-2">
-						<button type="submit" class="btn btn-outline-secondary">consultar</button>
-					</div>
-					<div class=" form-group col-md-4">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-					<div class=" form-group col-md-1">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-					<div class=" form-group col-md-2">
-						<input type="text" class="form-control" id="pwd">
-					</div>
-				</div>
-
-				<div class="content row col-md-12 mt-4 ">
-					<div class="row justify-content-center ">
-						<div class="col-md-7 justify-content-center text-center mt-2">
-							<button type="submit" class="btn btn-outline-secondary btn-lg">Confirmar</button>
-						</div>
-						<div class="d-block row mb-3 col-md-5 ">
-							<div class="float-right">
-								<label for="tot_venta">Total venta <input type="number"
-									class="form-control ml-4 " id="tot_venta"></label>
-							</div>
-							<div class="float-right">
-								<label for="tot_iva">Total IVA <input type="number"
-									class="form-control ml-4 " id="tot_iva">
-								</label>
-							</div>
-							<div class="float-right">
-								<label for="tot_c_iva">Total con IVA<input type="number"
-									class="form-control ml-4" id="tot_c_iva"></label>
-							</div>
-						</div>
-
-					</div>
-	<h2>Listado de las ventas del sistema</h2>
-	<table class="table table-striped">
-		<caption>Listado de las ventas del sistema</caption>
-		<thead>
-			<tr>
-				<th scope="col">codigo_venta</th>
-				<th scope="col">cedula_cliente</th>
-				<th scope="col">cedula_usuario </th>
-				<th scope="col">total_venta</th>
-				<th scope="col">iva_venta</th>
-				<th scope="col">valor_venta</th>				
-				<th scope="col"></th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${ventas}" var="venta">
-				<tr>
-					<td>${venta.codigo_venta}</td>
-					<td>${venta.cedula_cliente}</td>
-					<td>${venta.cedula_usuario}</td>
-					<td>${venta.total_venta}</td>
-					<td>${venta.iva_venta}</td>
-					<td>${venta.valor_venta}</td>					
-					<td><a href="/ventas/?cedula=${venta.cedula_cliente}">Editar</a></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-
 				</div>
 			</div>
-		</form>
+			<div class="row">
+				<div class="form-group col-md-3 ">
+					<label for="" class="w-100">Cod. Producto </label>
+				</div>
+				<!-- &nbsp; == espacio en html para no dejar div en blanco-->
+				<div class="form-group col-md-2 mb-2">
+					<label class="w-100"> &nbsp; </label>
+				</div>
+				<div class=" form-group col-md-4 ">
+					<label for="" class="w-100 ">Nombre Producto</label>
+				</div>
+				<div class=" form-group col-md-1 ">
+					<label for="" class="w-100">Cantidad</label>
+				</div>
+				<div class=" form-group col-md-2">
+					<label for="" class="w-100">Valor Total</label>
+				</div>
+			</div>
 
+			<c:forEach items="${venta.detalleVentas}" varStatus="indice">
+
+				<div class="row">
+					<div class="form-group col-md-3 pr-2">
+						<form:input path="detalleVentas[${indice.index}].codigoProducto"
+							type="text" class="form-control" id=""></form:input>
+					</div>
+					<div class="form-group col-md-2">
+						<button type="submit" class="btn btn-outline-secondary">consultar</button>
+					</div>
+					<div class=" form-group col-md-4">
+						<input type="text" class="form-control" id="pwd">
+					</div>
+					<div class=" form-group col-md-1">
+						<form:input path="detalleVentas[${indice.index}].cantidadProducto"
+							type="text" class="form-control" id=""></form:input>
+					</div>
+					<div class=" form-group col-md-2">
+						<form:input path="detalleVentas[${indice.index}].totalVenta"
+							type="text" class="form-control" id=""></form:input>
+					</div>
+				</div>
+
+			</c:forEach>
+
+
+			<div class="content row col-md-12 mt-4 ">
+				<div class="row justify-content-center ">
+					<div class="col-md-7 justify-content-center text-center mt-2">
+						<button type="submit" class="btn btn-outline-secondary btn-lg">Confirmar</button>
+					</div>
+					<div class="d-block row mb-3 col-md-5 ">
+						<div class="float-right">
+							<form:label path="totalVenta" for="totalVenta">Total venta <form:input
+									path="totalVenta" name="totalVenta" type="text"
+									class="form-control ml-4 " id="tot_venta"></form:input>
+							</form:label>
+						</div>
+						<div class="float-right">
+							<form:label path="ivaVenta" for="ivaVenta">Total IVA <form:input
+									path="ivaVenta" type="text" class="form-control ml-4 "
+									id="ivaVenta"></form:input>
+							</form:label>
+						</div>
+						<div class="float-right">
+							<form:label path="valorVenta" for="valorVenta">Total con IVA<form:input
+									path="valorVenta" type="text" class="form-control ml-4"
+									id="valorVenta"></form:input>
+							</form:label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<input type="submit" value="Guardar"
+				class="btn btn-outline-secondary form-group col-2"
+				formaction="/guardar" formmethod="post">
+		</form:form>
 	</div>
 </t:plantilla>
