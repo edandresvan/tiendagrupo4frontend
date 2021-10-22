@@ -9,9 +9,9 @@
 		class=" color-block container mt-4border border-light rounded-lg font-weight-normal purple-gradient container-md form-register "
 		id="conxtainer">
 
-		<a type="button" href="reportesusuarios.jsp"
+		<a type="button" href="/reportes/listausuarios"
 			class="btn btn-outline-secondary btn-lg btn-block">Listado de
-			Usuarios</a> <a type="button" href="reportesclientes.jsp"
+			Usuarios</a> <a type="button" href="/reportes/listaclientes"
 			class="btn btn-outline-secondary btn-lg btn-block">Listado de
 			Clientes</a> <a type="button" href="/reportes/ventasporcliente"
 			class="btn btn-outline-secondary btn-lg btn-block">Ventas por
