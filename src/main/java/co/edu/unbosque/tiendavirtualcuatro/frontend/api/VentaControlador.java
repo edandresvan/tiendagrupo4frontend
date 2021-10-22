@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import co.edu.unbosque.tiendavirtualcuatro.frontend.dao.ClienteDAO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ClienteVO;
+import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ProductoVO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.ProveedorVO;
 import co.edu.unbosque.tiendavirtualcuatro.frontend.model.VentaVO;
 import reactor.core.publisher.Flux;
@@ -36,7 +37,21 @@ public class VentaControlador extends ControladorBase {
   @GetMapping
   public ModelAndView getVentaHome(ModelMap model) {
     model.addAttribute("venta", new VentaVO());
-    // return "/ventas/index";
+    
+    Flux<VentaVO> ventasFlux = crearWebClient().get()
+        .uri(uriBuilder -> uriBuilder
+          .path(getUri())          
+          .build())
+        .accept(MediaType.APPLICATION_JSON)
+        .retrieve()
+        .onStatus(status -> status == HttpStatus.NOT_FOUND,
+          response -> Mono.empty())
+        .bodyToFlux(VentaVO.class);
+      List<VentaVO> ventas = ventasFlux.collectList()
+        .block();
+    
+      model.addAttribute("ventas", ventas);
+      
     return new ModelAndView("ventas/index", model);
   }
 

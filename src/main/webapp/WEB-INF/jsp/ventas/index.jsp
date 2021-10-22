@@ -126,4 +126,31 @@
 				formaction="/guardar" formmethod="post">
 		</form:form>
 	</div>
+	
+	<h2>Listado de las ventas del sistema</h2>
+          <table class="table table-striped">
+            <caption>Listado de las ventas del sistema</caption>
+            <thead>
+              <tr>
+                <th scope="col">Codigo Venta</th>
+                <th scope="col">Cedula Cliente</th>
+                <th scope="col">Cedula Usuario</th>
+                <th scope="col">Total Venta</th>
+                <th scope="col">Iva Venta</th>
+                <th scope="col">Valor Venta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach items="${ventas}" var="ventaExistente">
+                <tr>
+                  <td><a href="/ventas/${ventaExistente.codigo}">${ventaExistente.codigo}</a></td>
+                  <td>${ventaExistente.cedulaCliente}</td>
+                  <td>${ventaExistente.cedulaUsuario}</td>
+                  <td>${ventaExistente.totalVenta}</td>
+                  <td>${ventaExistente.ivaVenta}</td>
+                  <td>${ventaExistente.valorVenta}</td>
+                </tr>
+              </c:forEach>
+            </tbody>
+          </table>
 </t:plantilla>

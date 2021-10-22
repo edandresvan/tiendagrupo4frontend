@@ -120,7 +120,9 @@ public class ProveedorControlador extends ControladorBase {
   }
 
   @GetMapping("/nuevo")
-  public ModelAndView nuevoProveedor(ModelMap model,
+  public ModelAndView nuevoProveedor(
+      @ModelAttribute("proveedor") ProveedorVO proveedor,
+      ModelMap model,
       HttpServletRequest request) {
     model.addAttribute("tituloPagina", "Proveedores - Nuevo");
 
@@ -187,7 +189,8 @@ public class ProveedorControlador extends ControladorBase {
 
   @PostMapping("/delete")
   public ModelAndView eliminarProveedor(
-      @ModelAttribute("proveedor") ProveedorVO proveedor, ModelMap model) {
+      @ModelAttribute("proveedor") ProveedorVO proveedor, ModelMap model,
+      RedirectAttributes redirectAttributes) {
     Flux<ProveedorVO> proveedoresFlux = crearWebClient().delete()
       .uri(getUri() + "/" + proveedor.getNit())
       .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -197,7 +200,7 @@ public class ProveedorControlador extends ControladorBase {
 
     List<ProveedorVO> proveedores = proveedoresFlux.collectList()
       .block();
-
+    redirectAttributes.addFlashAttribute("mensajeExito", "Proveedor eliminado");
     return new ModelAndView("redirect:" + this.getUri());
   }
 }
